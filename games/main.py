@@ -12,3 +12,5 @@ while choice != "exit":
     elif choice == "B":
         game = Blackjack()
         money = game.play(money)
+    elif choice == "M":
+        money += int(input("Enter amount to add: "))

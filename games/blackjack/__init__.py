@@ -29,15 +29,24 @@ class Blackjack:
     def play(self, money:int):
         print("\n"+"* "*3+"BLACKJACK"+" *"*3)
         chip = int(input("Set chip value: "))
-        bet = "cards"
+        bet = ""
         while bet != "exit":
+            # Money check
+            if money <=0:
+                print("No money left!")
+                break
+            dealer = []
+            table = []
+            you = []
+            fold = False
             print("[-] Chip value: "+ str(chip))
             money -= chip
-            dealer = self.deal_cards(2)
-            table = self.deal_cards(3)
-            you = self.deal_cards(2)
+            dealer.extend(self.deal_cards(2))
+            table.extend(self.deal_cards(3))
+            you.extend(self.deal_cards(2))
             print("[&] Dealer: *, " + str(dealer[0]))
             print("[^] Table: " + str(table))
+            bet = "cards"
             while bet.isalpha():
                 if bet == "table":
                     print("[^] Table: " + str(table))
@@ -49,49 +58,43 @@ class Blackjack:
                     print(str(self.deck))
                 elif bet == "chip":
                     chip = int(input("Change chip value: "))
+                elif bet == "fold":
+                    print("Folded cards!")
+                    fold = True
+                    break
                 elif bet == "money":
                     print(money)
                 else:
                     print("Invalid bet!")
                 bet = input("Place your bet: ")
-            money =- int(bet)*chip
+            money -= int(bet)*chip if fold == False else 0
             table.append(self.get_card())
             print("[^] Table: " + str(table))
-            bet = input("Place your bet: ")
-            while bet.isalpha():
-                if bet == "table":
-                    print("[^] Table: " + str(table))
-                elif bet == "dealer":
-                    print("[&] Dealer: *, " + str(dealer[0]))
-                elif bet == "cards":
-                    print("[*] You: " + str(you))
-                elif bet == "chip":
-                    chip = int(input("Change chip value: "))
-                elif bet == "money":
-                    print(money)
-                else:
-                    print("Invalid bet!")
+            if fold == False:
                 bet = input("Place your bet: ")
-            money =- int(bet)*chip
+                while bet.isalpha():
+                    if bet == "table":
+                        print("[^] Table: " + str(table))
+                    elif bet == "dealer":
+                        print("[&] Dealer: *, " + str(dealer[0]))
+                    elif bet == "cards":
+                        print("[*] You: " + str(you))
+                    elif bet == "chip":
+                        chip = int(input("Change chip value: "))
+                    elif bet == "fold":
+                        print("Folded cards!")
+                        fold = True
+                        break
+                    elif bet == "money":
+                        print(money)
+                    else:
+                        print("Invalid bet!")
+                    bet = input("Place your bet: ")
+            money -= int(bet)*chip if fold == False else 0
             table.append(self.get_card())
             print("[^] Table: " + str(table))
-            bet = input("Place your bet: ")
-            while bet.isalpha():
-                if bet == "table":
-                    print("[^] Table: " + str(table))
-                elif bet == "dealer":
-                    print("[&] Dealer: *, " + str(dealer[0]))
-                elif bet == "cards":
-                    print("[*] You: " + str(you))
-                elif bet == "chip":
-                    chip = int(input("Change chip value: "))
-                elif bet == "money":
-                    print(money)
-                else:
-                    print("Invalid bet!")
-                bet = input("Place your bet: ")
-            
-
-
+            print("Game completed!")
+            # Check results
+            bet = input("Keep playing: ")
         return money   
             
